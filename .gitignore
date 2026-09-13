@@ -1,0 +1,25 @@
+# MATLAB temporary and auto-save files
+*.asv
+*.m~
+*.slxc
+*.mex*
+*.autosave
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+__MACOSX/
+
+# Jupyter / Python Checkpoints
+.ipynb_checkpoints/
+
+# IDE / Editor Files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Uncompressed Raw Dataset Folder (the canonical 6MB zip archive is tracked in data/mysignals_dataset.zip)
+data/mysignals/
