@@ -1,6 +1,6 @@
 # Signal Coverage Maps Using Measurements and Machine Learning
 
-**Author:** Kshitij Palekar ([@kshitijpalekar808-coder](https://github.com/kshitijpalekar808-coder))  And Deven Sonawane ([@devensonawane007]
+**Author:** Kshitij Palekar ([@kshitijpalekar808-coder](https://github.com/kshitijpalekar808-coder))  Deven Sonawane([devensonawane007](https://github.com/devensonawane007))
 **Project:** MathWorks Excellence in Innovation — Project #151  
 **Official Reference:** [MathWorks Project Hub #151](https://github.com/mathworks/MATLAB-Simulink-Challenge-Project-Hub/tree/main/projects/Signal%20Coverage%20Maps%20Using%20Measurements%20and%20Machine%20Learning)  
 **Platform:** MATLAB (R2021a or newer)  
