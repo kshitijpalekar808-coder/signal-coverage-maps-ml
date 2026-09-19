@@ -291,7 +291,7 @@ signal-coverage-maps-ml/
 In adherence to the **MathWorks Excellence in Innovation** guidelines regarding Generative AI transparency:
 
 * **Primary Engineering Ownership:** The core research questions, evaluation methodology (real-world sector holdout vs. controlled grid benchmark), model selection, hyperparameter bounds, and technical interpretations were formulated, executed, and verified by the author.
-* **Targeted GenAI Collaboration:** An AI coding assistant (Claude, Anthropic) was consulted as an interactive pair programmer for specific debugging, refactoring, and code verification tasks:
+* **Targeted GenAI Collaboration:** An AI coding assistant (Claude and Antigravity ) was consulted as an interactive pair programmer for specific debugging, refactoring, and code verification tasks:
   1. **Diagnosing GPR Feature Collinearity:** Identifying why feeding explicit radio-physics features ($d, \log_{10}d, \theta$) alongside Cartesian coordinates $(X,Y)$ into the ARD Matérn 5/2 kernel degraded RMSE from 2.49 dB to 3.57 dB. The assistant helped trace this degradation to redundant degrees of freedom that destabilized Nelder-Mead simplex optimization.
   2. **Active Learning Feature Alignment:** Identifying and fixing an inconsistency in `run_route_active_learning.m` where candidate route evaluation retained redundant feature dimensions instead of using the validated spatial-only $[X, Y]$ representation.
   3. **Dataset Provenance & Schema Auditing:** Disentangling and refactoring legacy file naming ambiguities between authentic mySignals GSM drive-test logs and the synthetic Manhattan grid simulation.
