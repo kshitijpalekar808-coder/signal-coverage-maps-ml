@@ -64,7 +64,7 @@ function [resultsTable, models] = run_real_field_benchmark()
 
     % Package benchmark table
     modelNames = {
-        '1. 3GPP TR 38.901 Reference (No Training)';
+        '1. 3GPP-Inspired UMi Reference (No Training)';
         '2. Empirical Log-Distance Fit (OLS)';
         '3. True kNN-IDW (p=2, k=30)';
         '4. Natural Neighbor Interpolation';

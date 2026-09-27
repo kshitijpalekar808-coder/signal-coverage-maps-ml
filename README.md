@@ -1,11 +1,16 @@
 # Signal Coverage Maps Using Measurements and Machine Learning
 
-**Author:** Kshitij Palekar ([@kshitijpalekar808-coder](https://github.com/kshitijpalekar808-coder))  Deven Sonawane([devensonawane007](https://github.com/devensonawane007))
-Amogh Malusare
+**Authors / Team Members:**
+- **Kshitij Palekar** ([@kshitijpalekar808-coder](https://github.com/kshitijpalekar808-coder)) — *Lead Developer & Primary Contact* ([kshitij.palekar@vit.edu.in](mailto:kshitij.palekar@vit.edu.in))
+- **Deven Sonawane** ([@devensonawane007](https://github.com/devensonawane007))
+- **Amogh Malusare**
 
+**Institution:** Vidyalankar Institute of Technology, Mumbai, India  
+**Project Advisor:** Dr. Sheetal Patil  
 **Project:** MathWorks Excellence in Innovation — Project #151  
 **Official Reference:** [MathWorks Project Hub #151](https://github.com/mathworks/MATLAB-Simulink-Challenge-Project-Hub/tree/main/projects/Signal%20Coverage%20Maps%20Using%20Measurements%20and%20Machine%20Learning)  
-**Platform:** MATLAB (R2021a or newer)  
+**License:** [BSD 2-Clause License](LICENSE)  
+**Platform:** MATLAB (R2021a or newer; tested on R2022b–R2024b)  
 
 ---
 
@@ -30,8 +35,7 @@ To evaluate models thoroughly, this repository tests across two complementary da
 * **Environment:** Urban Chania, Crete, Greece.
 * **Carrier Frequency:** $1860.2\text{ MHz}$ (GSM-1800 Downlink, ARFCN 787).
 * **Serving BTS:** Macrocell sector `6056x` at $(35.508354^\circ\text{N}, 24.024523^\circ\text{E})$.
-* **Telemetry Samples:** 898 spatial points collected by mobile devices with high GPS accuracy ($\le 65\text{ m}$).
-* **Spatial Holdout Strategy:** The area is partitioned into 4 geographic sectors. Models are trained on Zones 1–3 ($N = 662$, $73.7\%$) and tested on an unseen held-out quadrant (Zone 4, $N = 236$, $26.3\%$) to evaluate generalization under genuine physical shadowing and urban clutter without point leakage.
+* **Spatial Holdout Strategy:** The area is partitioned into 4 geographic quadrant sectors based on median Cartesian coordinates. Models are trained on Zones 1–3 ($N = 662$, $73.7\%$) and tested on held-out Zone 4 ($N = 236$, $26.3\%$). While records are strictly disjoint (0% sample overlap), note that this partition does not include an unmeasured spatial buffer (guard band); points immediately adjacent to the median boundary line in neighboring quadrants may still exhibit spatial autocorrelation. This is documented as a methodological constraint of the quadrant partition.
 
 ### Track 2: Controlled Urban Grid Simulation (`data/synthetic_urban_grid_dataset.csv`)
 * **Environment:** Manhattan-grid urban cellular layout ($1000\text{ m} \times 1000\text{ m}$) at $2.1\text{ GHz}$.
@@ -46,12 +50,12 @@ To evaluate models thoroughly, this repository tests across two complementary da
 
 We implement and benchmark six distinct approaches:
 
-1. **3GPP UMi Propagation Reference (No Training):** Deterministic theoretical urban micro path-loss model ($PL(d) = 32.4 + 20\log_{10}(f) + 30\log_{10}(d)$). Serves as an uncalibrated physics baseline.
+1. **3GPP-Inspired UMi Propagation Reference (No Training):** Deterministic theoretical urban micro path-loss model ($PL(d) = 32.4 + 20\log_{10}(f) + 30\log_{10}(d)$). Serves as an uncalibrated physics baseline.
 2. **Empirical Log-Distance Fit (OLS):** Calibrated Ordinary Least Squares regression: $\text{RSRP}(d) = \beta_0 + \beta_1 \log_{10}(d)$.
 3. **k-Nearest Neighbor Inverse Distance Weighting (kNN-IDW):** Spatial interpolation using $k = 30$ nearest neighbors with inverse-square distance weighting ($p = 2$).
 4. **Natural Neighbor Interpolation:** Delaunay-based Voronoi spatial interpolation via MATLAB's `scatteredInterpolant`.
 5. **Random Forest Regression Ensemble:** 150 regression trees with bootstrapped aggregation and Out-of-Bag (OOB) feature importance analysis.
-6. **Spatial ARD Gaussian Process Regression (Proposed):** Anisotropic Matérn 5/2 covariance kernel over spatial coordinates $(X, Y)$ with **Automatic Relevance Determination (ARD)**. Directional length-scales $\{\ell_X, \ell_Y\}$ and variances $\{\sigma_f, \sigma_n\}$ are optimized via Marginal Log-Likelihood (MLL) maximization using Nelder-Mead simplex search (`fminsearch`). GPR yields closed-form latent field uncertainty:
+6. **Spatial ARD Gaussian Process Regression (Proposed):** Anisotropic Matérn 5/2 covariance kernel over spatial coordinates $(X, Y)$ with **Automatic Relevance Determination (ARD)**. *(Note on terminology:* While the underlying code class was initially designated to evaluate "physics-informed" feature augmentation ($d, \log_{10}d, \theta$), our ablation experiments demonstrated that explicit physical feature concatenation induced collinear degradation; the champion proposed model is therefore pure **Spatial ARD GPR** operating on $[X, Y]$*)*. Directional length-scales $\{\ell_X, \ell_Y\}$ and variances $\{\sigma_f, \sigma_n\}$ are optimized via Marginal Log-Likelihood (MLL) maximization using Nelder-Mead simplex search (`fminsearch`). GPR yields closed-form latent field uncertainty:
    $$\sigma_{\text{latent}}^2(\mathbf{x}_*) = k(\mathbf{x}_*, \mathbf{x}_*) - \mathbf{k}_*^T (\mathbf{K} + \sigma_n^2 \mathbf{I})^{-1} \mathbf{k}_*$$
 
 ---
@@ -65,7 +69,7 @@ We implement and benchmark six distinct approaches:
 | Model | Category | RMSE (dB) | MAE (dB) | $R^2$ Score | MaxAE (dB) | P95AE (dB) |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
 | **Naive Mean Baseline** | Global Mean Reference | 7.80 | 6.00 | 0.000 | 24.12 | 15.65 |
-| **1. 3GPP Reference (0-Train)** | Theoretical Propagation | 17.09 | 15.55 | -3.81 | 33.47 | 27.99 |
+| **1. 3GPP-Inspired UMi Reference (0-Train)** | Theoretical Propagation | 17.09 | 15.55 | -3.81 | 33.47 | 27.99 |
 | **2. Natural Neighbor Interpolation** | Spatial Interpolation | 11.40 | 8.73 | -1.14 | 45.66 | 24.91 |
 | **3. Empirical Log-Distance Fit (OLS)** | Empirical Regression | 9.28 | 7.23 | -0.42 | 25.95 | 17.78 |
 | **4. kNN-IDW ($p=2, k=30$)** | Spatial Interpolation | 8.01 | 6.26 | -0.05 | 24.26 | 16.06 |
@@ -144,7 +148,11 @@ We evaluate model robustness across sampling densities from $2\%$ to $40\%$ unde
 
 ## 8. Active Learning for Drive-Test Route Optimization
 
-We simulate adaptive drive-test planning over $N = 20$ independent Monte Carlo trials, comparing passive random route selection against GPR latent uncertainty-guided ($\sigma_\text{latent}$) selection across candidate budgets of 2 to 8 routes.
+We simulate adaptive drive-test route planning on the controlled Manhattan grid layout.
+
+* **Experimental Protocol Note:**
+  - **Passive Random Selection (Baseline):** Evaluated as the Monte Carlo expectation (mean ± standard deviation and 95% confidence intervals) across $N = 20$ independent random route subset draws at each budget step.
+  - **Active Uncertainty Selection:** Evaluated as an operational sequential drive-test dispatch trajectory initialized deterministically from base arterial routes `[1, 2]`. At each budget increment, the unvisited candidate route maximizing latent model uncertainty ($\sigma_\text{latent}$) is appended to the survey trajectory.
 
 *Results from `results/active_learning_results.csv`:*
 
@@ -201,20 +209,27 @@ To verify project integrity and reproducibility, the included verification suite
 
 ### Quick Start in MATLAB:
 ```matlab
-% 1. Master Pipeline: Run all benchmarks, ablation, active learning & plotting
-main                  % or run_all_experiments
+% Option A: Rapid 5-Second Verification (Fulfills MathWorks Guideline 6)
+% Evaluates pre-trained GPR model on sample data with zero training overhead
+quick_demo
 
-% 2. Individual Experiment Runners:
+% Option B: Official MATLAB Unit Test Suite
+runtests('tests')   % or run tests/run_tests.m
+
+% Option C: Automated 12-Stage Reproducibility & Leakage Audit
+validate_project
+
+% Option D: Master Pipeline (One-Click End-to-End Execution)
+main                % or run_all_experiments
+
+% Option E: Individual Standalone Modules
 run_real_field_benchmark  % Real mySignals GSM field benchmark (Track 1)
 run_ablation_study        % Feature ablation study (Spatial vs Physics vs Hybrid)
 run_sparsity_test         % Sparsity stress test (2% to 40%)
 run_active_learning       % Route-aware active learning simulation (20 trials)
-
-% 3. Automated System Verification:
-validate_project
 ```
 
-**Toolbox Requirements:** Base MATLAB (R2021a or newer). No commercial optimization or machine learning toolboxes are strictly required; hyperparameter optimization uses native `fminsearch` (Nelder-Mead).
+**Toolbox Requirements:** Base MATLAB (R2021a or newer) with Statistics and Machine Learning Toolbox. Fallbacks are provided for Mapping Toolbox. See [`TOOLBOXES.md`](TOOLBOXES.md) for detailed environment specifications.
 
 ---
 
@@ -223,58 +238,50 @@ validate_project
 ```text
 signal-coverage-maps-ml/
 │
-├── main.m                              <- Master entry point
-├── run_all_experiments.m               <- End-to-end experiment pipeline (Track 1 + Track 2)
-├── run_real_field_benchmark.m          <- Real mySignals field benchmark
+├── LICENSE                             <- Open-source BSD 2-Clause License
+├── README.md                           <- Primary comprehensive project documentation
+├── TOOLBOXES.md                        <- Toolbox dependencies and compatibility notes
+├── main.m                              <- Master entry point (One-Click End-to-End)
+├── quick_demo.m                        <- Rapid 5-second verification demo (pre-trained model + sample data)
+├── validate_project.m                  <- 12-stage automated scientific & reproducibility verification suite
+├── run_all_experiments.m               <- Full experiment suite execution pipeline
+├── run_real_field_benchmark.m          <- Real mySignals field benchmark runner
 ├── run_ablation_study.m                <- Feature ablation study runner
 ├── run_sparsity_test.m                 <- Sparsity sweep runner (2% to 40%)
 ├── run_active_learning.m               <- Route-aware active learning runner
 ├── run_real_data.m                     <- Convenience alias for real field benchmark
-├── validate_project.m                  <- 12-test system verification script
 │
-├── src/                                <- Source code
-│   ├── data/
-│   │   ├── prepare_real_mysignals_dataset.m <- Extractor for raw mySignals logs
-│   │   ├── load_real_mysignals_data.m       <- Loader with 4-zone spatial holdout
-│   │   ├── generate_synthetic_drive_test.m  <- Synthetic Manhattan grid generator
-│   │   ├── load_synthetic_grid_data.m       <- Loader with 12-route holdout
-│   │   └── generate_sparsity_dataset.m      <- 2D grid generator for sparsity sweeps
-│   ├── preprocessing/
-│   │   ├── extract_physics_features.m       <- Computes distance, log-dist, and azimuth
-│   │   └── normalize_features.m             <- Training-only feature normalization
-│   ├── models/
-│   │   ├── theoretical_propagation_model.m  <- 3GPP UMi path-loss reference
-│   │   ├── log_distance_model.m             <- Empirical OLS log-distance model
-│   │   ├── knn_idw_model.m                  <- kNN inverse distance weighting
-│   │   ├── natural_neighbor_model.m         <- Natural neighbor spatial interpolant
-│   │   ├── random_forest_model.m            <- 150-tree Random Forest ensemble
-│   │   └── physics_informed_gpr_model.m     <- Spatial ARD Matérn 5/2 GPR
-│   ├── evaluation/
-│   │   ├── evaluate_predictions.m           <- RMSE, MAE, R2, MaxAE, P95AE metrics
-│   │   ├── evaluate_feature_ablation.m      <- Feature ablation benchmark engine
-│   │   └── run_sparsity_analysis.m          <- Sparsity evaluation engine
-│   ├── active_learning/
-│   │   └── run_route_active_learning.m      <- Active learning route optimizer
-│   ├── visualization/
-│   │   ├── plot_coverage_maps.m             <- Coverage and uncertainty plotting
-│   │   ├── plot_ablation_comparison.m       <- Ablation comparison bar chart
-│   │   └── plot_sparsity_analysis.m         <- Sparsity sweep curves
-│   └── utilities/
-│       └── compute_pairwise_dist.m          <- Pairwise Euclidean distance
+├── data/                               <- Datasets & samples
+│   ├── sample/                         <- Lightweight sample datasets for rapid verification (Guideline 3)
+│   │   ├── sample_urban_grid.csv       <- 100-row sample synthetic drive-test data
+│   │   ├── sample_real_mysignals.csv   <- 100-row sample real field telemetry
+│   │   └── README.md                   <- Sample dataset schemas
+│   ├── real_mysignals_dataset.csv      <- 898 GSM-1800 field measurements (Chania, Greece)
+│   ├── synthetic_urban_grid_dataset.csv<- 1,356 synthetic measurements across 12 routes
+│   ├── mysignals_dataset.zip           <- Raw source archive from mySignals project
+│   └── README.md                       <- Dataset provenance & column schemas
 │
-├── data/                               <- Datasets
-│   ├── real_mysignals_dataset.csv          <- 898 GSM-1800 field measurements (Chania, Greece)
-│   ├── synthetic_urban_grid_dataset.csv    <- 1,356 synthetic measurements across 12 routes
-│   ├── mysignals_dataset.zip               <- Raw source archive from mySignals project
-│   └── README.md                           <- Dataset provenance & column schemas
+├── models/                             <- Pre-trained machine learning model artifacts (Guideline 4)
+│   ├── gpr_spatial_model.mat           <- Pre-trained Spatial ARD GPR model artifact
+│   ├── random_forest_model.mat         <- Pre-trained 100-tree Random Forest ensemble artifact
+│   ├── log_distance_model.mat          <- Pre-trained Empirical Log-Distance model artifact
+│   └── README.md                       <- Model artifact inventory & loading documentation
 │
-├── results/                            <- Exported CSVs and figures
-│   ├── real_field_benchmark_results.csv    <- Real field data benchmark metrics
-│   ├── benchmark_results.csv               <- Synthetic grid benchmark metrics
-│   ├── ablation_study_results.csv          <- Feature ablation metrics
-│   ├── sparsity_stress_results.csv         <- Sparsity sweep metrics
-│   ├── active_learning_results.csv         <- Active learning results
-│   └── figures/                            <- Figures (300 DPI)
+├── docs/                               <- Comprehensive project reports & guides (Guideline 7)
+│   ├── PROJECT_REPORT.md               <- Full engineering and scientific project report
+│   └── USAGE_GUIDE.md                  <- Step-by-step evaluator instructions
+│
+├── tests/                              <- Automated MATLAB Unit Testing Framework (Guideline 6)
+│   ├── test_signal_coverage_pipeline.m <- matlab.unittest.TestCase test suite (6 unit tests)
+│   └── run_tests.m                     <- Unit test execution script
+│
+├── results/                            <- Exported CSVs and 300 DPI figures
+│   ├── real_field_benchmark_results.csv<- Real field data benchmark metrics
+│   ├── benchmark_results.csv           <- Synthetic grid benchmark metrics
+│   ├── ablation_study_results.csv      <- Feature ablation metrics
+│   ├── sparsity_stress_results.csv     <- Sparsity sweep metrics
+│   ├── active_learning_results.csv     <- Active learning results
+│   └── figures/                        <- Publication-grade figures (300 DPI)
 │       ├── real_field_coverage_reconstruction.png
 │       ├── coverage_reconstruction_map.png
 │       ├── ablation_study_comparison.png
@@ -282,13 +289,35 @@ signal-coverage-maps-ml/
 │       ├── active_learning_comparison.png
 │       └── active_learning_route_selection.png
 │
-├── TOOLBOXES.md                        <- Toolbox compatibility notes
-└── README.md                           <- Project documentation
+└── src/                                <- Modular source code
+    ├── data/                           <- Data loaders, extractors, and spatial holdout splitters
+    ├── preprocessing/                  <- Coordinate projection and physics feature extractors
+    ├── models/                         <- GPR, Random Forest, kNN-IDW, Log-Distance, 3GPP models
+    ├── evaluation/                     <- Prediction evaluators, ablation & sparsity engines
+    ├── active_learning/                <- Route-aware variance-guided path optimizers
+    ├── visualization/                  <- Coverage heatmaps, uncertainty maps, error residuals
+    └── utilities/                      <- Pairwise distance & spatial helper functions
 ```
 
 ---
 
-## 12. Generative AI Disclosure & Technical Ownership
+## 12. MathWorks Repository Guidelines Compliance Matrix
+
+| Guideline | MathWorks Requirement | Project Implementation |
+|---|---|---|
+| **A. License** | BSD 2-Clause or MIT open-source license | [LICENSE](LICENSE) (BSD 2-Clause License) |
+| **B.1 Layout** | Clear layout (`src/`, `data/`, `models/`, `docs/`, `tests/`) | Fully organized modular folder hierarchy |
+| **B.2 Entry Point** | Single main entry point running full system end-to-end | [main.m](main.m) (One-Click Run) |
+| **B.3 Input Data** | Small sample dataset in `data/sample/` | [`data/sample/`](data/sample/) (`sample_urban_grid.csv`, `sample_real_mysignals.csv`) |
+| **B.4 Models** | Pre-trained model files in `models/` directly loadable | [`models/`](models/) (`gpr_spatial_model.mat`, `random_forest_model.mat`, etc.) |
+| **B.5 Toolboxes** | List required toolboxes and external tools | [`TOOLBOXES.md`](TOOLBOXES.md) and Section 10 |
+| **B.6 Testing** | Fast test/demo and unit test script in `tests/` | [quick_demo.m](quick_demo.m) (5s run), [validate_project.m](validate_project.m), [`tests/`](tests/) |
+| **B.7 Docs** | README with setup/run, comments, and reports in `docs/` | [README.md](README.md), [`docs/PROJECT_REPORT.md`](docs/PROJECT_REPORT.md), [`docs/USAGE_GUIDE.md`](docs/USAGE_GUIDE.md) |
+| **B.8 Best Practices** | Relative paths, `.gitignore`, clean execution | Relative paths throughout, clean `.gitignore`, 0 hardcoded paths |
+
+---
+
+## 13. Generative AI Disclosure & Technical Ownership
 
 In adherence to the **MathWorks Excellence in Innovation** guidelines regarding Generative AI transparency:
 
@@ -299,3 +328,16 @@ In adherence to the **MathWorks Excellence in Innovation** guidelines regarding 
   3. **Dataset Provenance & Schema Auditing:** Disentangling and refactoring legacy file naming ambiguities between authentic mySignals GSM drive-test logs and the synthetic Manhattan grid simulation.
   4. **Validation Test Suite Harness:** Assisting in structuring the 12-test automated verification script (`validate_project.m`) to systematically confirm zero spatial data leakage, coincident point handling, and uncertainty bounds.
 * **Technical Defense:** All equations, numerical implementations, and conclusions have been thoroughly checked, tested, and can be defended in detail by the author during evaluation.
+
+---
+
+## 14. Contact & Project Metadata
+
+* **Author:** Kshitij Palekar
+* **Email:** [kshitij.palekar@vit.edu.in](mailto:kshitij.palekar@vit.edu.in)
+* **Institution:** Vidyalankar Institute of Technology, Mumbai, India
+* **Advisor:** Dr. Sheetal Patil
+* **Challenge:** MathWorks Excellence in Innovation — Project #151
+* **Project Title:** Signal Coverage Maps Using Measurements and Machine Learning
+* **Repository Link:** [https://github.com/kshitijpalekar808-coder/signal-coverage-maps-ml](https://github.com/kshitijpalekar808-coder/signal-coverage-maps-ml)
+

@@ -89,13 +89,18 @@ function [alResultsTable, fig] = run_route_active_learning(numRandomTrials, save
 
     % ---------------------------------------------------------------------
     % 2. Uncertainty-Guided Active Route Selection (Cumulative)
-
     % ---------------------------------------------------------------------
+    % NOTE ON EXPERIMENTAL PROTOCOL:
+    % - Passive random selection is evaluated as the Monte Carlo expectation
+    %   (mean ± std, 95% CI) over 20 independent random route subsets at each budget.
+    % - Active learning simulates an operational sequential dispatch trajectory:
+    %   it initializes deterministically from base arterial seed routes [1, 2],
+    %   then greedily acquires subsequent routes that maximize latent model uncertainty.
     rmse_active = zeros(numSteps, 1);
     mae_active  = zeros(numSteps, 1);
     selectedActiveRoutes = cell(numSteps, 1);
 
-    % Start deterministically with initial seed routes [1, 2]
+    % Start with initial operational seed routes [1, 2]
     activeRoutes = [1, 2];
     selectedActiveRoutes{1} = activeRoutes;
 

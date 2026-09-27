@@ -9,10 +9,13 @@
 %
 % Spatial Validation Rigor:
 % -------------------------
-% Evaluates on completely unvisited geographic sector / street corridor:
+% Evaluates on held-out geographic quadrant sector:
 %   - Training Zones: Zones 1, 2, 3 (73.7% of measurements, 662 points)
 %   - Test Zone: Zone 4 (26.3% of measurements, 236 points)
-% Guarantees ZERO spatial point leakage between training and testing.
+% Guarantees ZERO sample/record overlap between training and testing sets.
+% Note on Spatial Boundary: Zones are partitioned by median coordinates without
+% an unmeasured spatial buffer (guard band). While record sets are strictly disjoint,
+% boundary-adjacent points in neighboring quadrants may retain spatial autocorrelation.
 % =========================================================================
 
 function [trainData, testData, bsInfo, allData] = load_real_mysignals_data(csvFilePath, testZone)
