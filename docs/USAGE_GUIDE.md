@@ -7,12 +7,16 @@ This guide provides step-by-step instructions for running, testing, and evaluati
 ---
 
 ### 1. Prerequisites and System Requirements
-- **MATLAB Release:** R2022b or later (recommended R2023a / R2024a / R2024b)
+- **MATLAB Release:** R2021a or later (recommended R2023a / R2024a / R2024b)
 - **Operating System:** Windows, macOS, or Linux
-- **Required MATLAB Toolboxes:**
-  - Statistics and Machine Learning Toolbox (for GPR, TreeBagger Random Forest, evaluation metrics)
-  - Mapping Toolbox *(Optional / Fallback provided)*: Automated Haversine / UTM projections fallback gracefully if Mapping Toolbox is absent.
-  - Parallel Computing Toolbox *(Optional)*: Accelerates cross-validation and active learning trials.
+- **Required MATLAB Toolboxes:** **None (100% Base MATLAB)**
+  - All core algorithms (anisotropic Matérn 5/2 GPR, 150-tree regression forest, $k$-NN IDW, log-distance OLS, 3GPP propagation, spatial coordinate transforms, and evaluation metrics) are implemented in pure, vectorized MATLAB.
+  - Zero paid or proprietary toolboxes are required to run demos, test suites, or full benchmark pipelines.
+- **Optional Toolboxes (Gracefully Bypassed via Native Fallbacks):**
+  - *Statistics and Machine Learning Toolbox (Optional)*: Leveraged if available (e.g., for `TreeBagger`); otherwise bypassed by the high-performance native pure-MATLAB ensemble engine with zero degradation in accuracy.
+  - *Mapping Toolbox (Optional)*: Automatic vectorized Haversine and local projection fallbacks activate when absent.
+  - *Parallel Computing Toolbox (Optional)*: Accelerates cross-validation and active learning loops when workers are present.
+  - See [`TOOLBOXES.md`](../TOOLBOXES.md) for the complete compatibility matrix.
 
 ---
 

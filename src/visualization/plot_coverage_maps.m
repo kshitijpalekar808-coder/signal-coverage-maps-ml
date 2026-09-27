@@ -122,7 +122,6 @@ function fig = plot_coverage_maps(fullGrid, trainData, testData, gprModel, bsInf
         if ~exist(fullfile('results', 'figures'), 'dir'), mkdir(fullfile('results', 'figures')); end
 
         saveas(fig, fullfile('results', 'figures', 'coverage_reconstruction_map.png'));
-        saveas(fig, fullfile('results', 'real_data_coverage_reconstruction.png')); % Backward compatibility
         fprintf('Saved coverage reconstruction figure to results/figures/coverage_reconstruction_map.png\n');
     end
 end

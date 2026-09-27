@@ -25,7 +25,6 @@ sparsities = [0.02, 0.05, 0.08, 0.10, 0.20, 0.40];
 [sparsityTable, fig] = run_sparsity_analysis(sparsities, true);
 
 writetable(sparsityTable, fullfile(projectRoot, 'results', 'sparsity_stress_results.csv'));
-writetable(sparsityTable, fullfile(projectRoot, 'results', 'sparsity_results.csv'));
 
 disp('=== Sparsity Stress Test Results ===');
 disp(sparsityTable);

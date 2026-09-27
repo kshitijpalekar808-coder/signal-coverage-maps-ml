@@ -87,9 +87,6 @@ function [resultsTable, models] = run_real_field_benchmark()
     writetable(resultsTable, outCsv);
     fprintf('Saved real field benchmark CSV to: %s\n', outCsv);
 
-    % Save duplicate for backwards compatibility
-    writetable(resultsTable, fullfile(projectRoot, 'results', 'real_data_benchmark_results.csv'));
-
     % Generate Publication Figure
     fig = figure('Position', [100, 100, 1200, 900], 'Color', 'w', 'Visible', 'off');
 
@@ -147,9 +144,7 @@ function [resultsTable, models] = run_real_field_benchmark()
     grid on; ylim([-20, 20]);
 
     figPath1 = fullfile(projectRoot, 'results', 'figures', 'real_field_coverage_reconstruction.png');
-    figPath2 = fullfile(projectRoot, 'results', 'real_data_coverage_reconstruction.png');
     exportgraphics(fig, figPath1, 'Resolution', 300);
-    exportgraphics(fig, figPath2, 'Resolution', 300);
     close(fig);
     fprintf('Exported publication figure to: %s\n', figPath1);
 

@@ -1,7 +1,7 @@
 % Project Validation and Verification Test Suite
 % Project: Signal Coverage Maps Using Measurements and Machine Learning
 % MathWorks Excellence in Innovation - Project #151
-% Author: Kshitij Palekar
+% Authors: Kshitij Palekar, Deven Sonawane, Amogh Malusare (Vidyalankar Institute of Technology)
 
 function status = validate_project()
     fprintf('======================================================================\n');

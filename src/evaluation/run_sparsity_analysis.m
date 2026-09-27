@@ -78,7 +78,6 @@ function [sparsityTable, fig] = run_sparsity_analysis(sparsities, saveOutputs)
         if ~exist(figDir, 'dir'), mkdir(figDir); end
 
         writetable(sparsityTable, fullfile(resDir, 'sparsity_stress_results.csv'));
-        writetable(sparsityTable, fullfile(resDir, 'sparsity_results.csv'));
         fig = plot_sparsity_analysis(sparsityTable, true);
     end
 end

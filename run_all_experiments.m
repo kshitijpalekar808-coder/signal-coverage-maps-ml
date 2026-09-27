@@ -106,7 +106,6 @@ fprintf('\n=== PRIMARY MODEL BENCHMARK (HELD-OUT ROUTES 10-12) ===\n');
 disp(benchmarkTable);
 
 writetable(benchmarkTable, fullfile(projectRoot, 'results', 'benchmark_results.csv'));
-writetable(benchmarkTable, fullfile(projectRoot, 'results', 'real_data_benchmark_results.csv')); % Backward compatibility
 
 %% =========================================================================
 %% 3. SCIENTIFIC FEATURE ABLATION STUDY
