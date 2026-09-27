@@ -3,7 +3,7 @@
 **Authors / Team Members:**
 - **Kshitij Palekar** ([@kshitijpalekar808-coder](https://github.com/kshitijpalekar808-coder)) — *Lead Developer & Primary Contact* ([kshitij.palekar@vit.edu.in](mailto:kshitij.palekar@vit.edu.in))
 - **Deven Sonawane** ([@devensonawane007](https://github.com/devensonawane007))
-- **Amogh Malusare**
+- **Amogh Malusare** ([@Amogh162](https://github.com/Amogh162))
 
 **Institution:** Vidyalankar Institute of Technology, Mumbai, India  
 **Project Advisor:** Dr. Sheetal Patil  
@@ -333,8 +333,10 @@ In adherence to the **MathWorks Excellence in Innovation** guidelines regarding 
 
 ## 14. Contact & Project Metadata
 
-* **Author:** Kshitij Palekar
-* **Email:** [kshitij.palekar@vit.edu.in](mailto:kshitij.palekar@vit.edu.in)
+* **Authors / Team Members:**
+  * **Kshitij Palekar** ([@kshitijpalekar808-coder](https://github.com/kshitijpalekar808-coder)) — *Lead Developer & Primary Contact* ([kshitij.palekar@vit.edu.in](mailto:kshitij.palekar@vit.edu.in))
+  * **Deven Sonawane** ([@devensonawane007](https://github.com/devensonawane007))
+  * **Amogh Malusare** ([@Amogh162](https://github.com/Amogh162))
 * **Institution:** Vidyalankar Institute of Technology, Mumbai, India
 * **Advisor:** Dr. Sheetal Patil
 * **Challenge:** MathWorks Excellence in Innovation — Project #151

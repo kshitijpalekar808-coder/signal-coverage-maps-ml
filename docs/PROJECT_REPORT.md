@@ -1,8 +1,9 @@
 # Engineering and Scientific Report
 ## Signal Coverage Maps Using Measurements and Machine Learning
 **MathWorks Excellence in Innovation — Project #151**  
-**Author:** Kshitij Palekar  
-**Institution:** Vidyalankar Institute of Technology  
+**Authors / Team Members:** Kshitij Palekar, Deven Sonawane, Amogh Malusare  
+**Institution:** Vidyalankar Institute of Technology, Mumbai, India  
+**Project Advisor:** Dr. Sheetal Patil  
 **Contact:** kshitij.palekar@vit.edu.in  
 **Repository:** [github.com/kshitijpalekar808-coder/signal-coverage-maps-ml](https://github.com/kshitijpalekar808-coder/signal-coverage-maps-ml)  
 **License:** BSD 2-Clause License  
