@@ -1,7 +1,7 @@
 # Signal Coverage Maps Using Measurements and Machine Learning
 
 **Authors / Team Members:**
-- **Kshitij Palekar** ([@kshitijpalekar808-coder](https://github.com/kshitijpalekar808-coder)) — *Lead Developer & Primary Contact* ([kshitij.palekar@vit.edu.in](mailto:kshitij.palekar@vit.edu.in))
+- **Kshitij Palekar** ([@kshitijpalekar808-coder](https://github.com/kshitijpalekar808-coder))
 - **Deven Sonawane** ([@devensonawane007](https://github.com/devensonawane007))
 - **Amogh Malusare** ([@Amogh162](https://github.com/Amogh162))
 
